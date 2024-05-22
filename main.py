@@ -11,7 +11,7 @@ import pygame
 WIDTH = 1920
 HEIGHT = 1080
 
-BORDER = 20
+BORDER = 120
 
 CAR_START_X = 830
 CAR_START_Y = 920
@@ -76,7 +76,7 @@ class Car:
 
 		#we only have to check for the corners, not for the entire car
 		for point in self.corners:
-			if game_map.get_at(int(point[0]), int(point[1])) == BAD_COLOR:
+			if game_map.get_at((int(point[0]), int(point[1]))) == BAD_COLOR:
 				self.alive = False
 				break
 
@@ -100,7 +100,6 @@ class Car:
 		while game_map.get_at((x, y)) != BAD_COLOR and length < MAX_SENSOR_LENGTH:
 			length += 1
 			update_coords()
-			print(x, y);
 
 		dist = distance2d(x, y, center_x, center_y)
 
@@ -108,7 +107,7 @@ class Car:
 
 	def update_sensors(self, game_map):
 		for angle in range(-90, 120, 45):
-			self.update_sensors(angle, game_map)
+			self.update_sensor(angle, game_map)
 
 	#dont let the car get too close to the map limits
 	def correct_positions(self):
@@ -116,6 +115,14 @@ class Car:
 		self.position[1] = min(self.position[1], HEIGHT - BORDER)
 		self.position[0] = max(self.position[0], BORDER)
 		self.position[1] = max(self.position[1], BORDER)
+
+	def rotate_center(self, image, angle):
+		rectangle = image.get_rect()
+		rotated_image = pygame.transform.rotate(image, angle)
+		rotated_rectangle = rectangle.copy()
+		rotated_rectangle.center = rotated_image.get_rect().center
+		rotated_image = rotated_image.subsurface(rotated_rectangle).copy()
+		return rotated_image
 
 	def update(self, game_map):
 		if not self.speed_set:
@@ -131,7 +138,21 @@ class Car:
 		self.distance += self.speed
 		self.time += 1
 
-		
+		#calculate the 4 corners
+		length = 0.5 * CAR_SIZE_X
+		center_x = self.center[0]
+		center_y = self.center[1]
+
+		left_top = [center_x + math.cos(math.radians((self.angle + 30))) * length, center_y + math.sin(math.radians((self.angle + 30))) * length]
+		right_top = [center_x + math.cos(math.radians((self.angle + 150))) * length, center_y + math.sin(math.radians((self.angle + 150))) * length]
+		left_bottom = [center_x + math.cos(math.radians((self.angle + 210))) * length, center_y + math.sin(math.radians((self.angle + 210))) * length]
+		right_bottom = [center_x + math.cos(math.radians((self.angle + 330))) * length, center_y + math.sin(math.radians((self.angle + 330))) * length]
+		self.corners = [left_top, right_top, left_bottom, right_bottom]
+
+		self.check_collision(game_map)
+		self.sensors.clear()
+		self.update_sensors(game_map)
+
 
 def run_simulation():
 	pygame.init()
@@ -156,6 +177,7 @@ def run_simulation():
 		
 		car.update_sensors(game_map)
 		car.draw(screen)
+		car.update(game_map)
 
 		pygame.display.flip() 
 	
