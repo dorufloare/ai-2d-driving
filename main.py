@@ -143,13 +143,14 @@ class Car:
 		center_x = self.center[0]
 		center_y = self.center[1]
 
-		left_top = [center_x + math.cos(math.radians((self.angle + 30))) * length, center_y + math.sin(math.radians((self.angle + 30))) * length]
-		right_top = [center_x + math.cos(math.radians((self.angle + 150))) * length, center_y + math.sin(math.radians((self.angle + 150))) * length]
-		left_bottom = [center_x + math.cos(math.radians((self.angle + 210))) * length, center_y + math.sin(math.radians((self.angle + 210))) * length]
-		right_bottom = [center_x + math.cos(math.radians((self.angle + 330))) * length, center_y + math.sin(math.radians((self.angle + 330))) * length]
-		self.corners = [left_top, right_top, left_bottom, right_bottom]
+		left_top 			= [center_x + math.cos(math.radians((self.angle + 30)))  * length, center_y + math.sin(math.radians((self.angle + 30)))  * length]
+		right_top 		= [center_x + math.cos(math.radians((self.angle + 150))) * length, center_y + math.sin(math.radians((self.angle + 150))) * length]
+		left_bottom 	= [center_x + math.cos(math.radians((self.angle + 210))) * length, center_y + math.sin(math.radians((self.angle + 210))) * length]
+		right_bottom	= [center_x + math.cos(math.radians((self.angle + 330))) * length, center_y + math.sin(math.radians((self.angle + 330))) * length]
+		self.corners 	= [left_top, right_top, left_bottom, right_bottom]
 
 		self.check_collision(game_map)
+		
 		self.sensors.clear()
 		self.update_sensors(game_map)
 
