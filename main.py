@@ -153,6 +153,19 @@ class Car:
 		self.sensors.clear()
 		self.update_sensors(game_map)
 
+	def is_alive(self):
+		return self.alive
+	
+	def get_reward(self):
+		return self.distance / (CAR_SIZE_X / 2)
+	
+	def get_data(self):
+		sensors = self.sensors
+		sensor_data = [0, 0, 0, 0, 0]
+		for i, sensor in enumerate(sensors):
+			sensor_data[i] = int(sensor[1] / 30)
+		return sensor_data
+
 
 def run_simulation():
 	pygame.init()
