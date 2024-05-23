@@ -40,6 +40,10 @@ MAX_SENSOR_LENGTH = 300
 
 current_generation = 0
 
+pygame.init()
+pygame.font.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+
 def distance2d(x1, y1, x2, y2):
 	delta_x = x1 - x2
 	delta_y = y1 - y2
@@ -170,9 +174,6 @@ def run_simulation(genomes, config):
 	networks = []
 	cars = []
 
-	pygame.init()
-	screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-
 	for i, genome in genomes:
 		net = neat.nn.FeedForwardNetwork.create(genome, config)
 		networks.append(net)
@@ -254,8 +255,6 @@ def run_simulation(genomes, config):
 
 		pygame.display.flip()  
 		clock.tick(60)  # Run at 60 frames per second
-	
-	pygame.quit() 
 
 if __name__ == "__main__":
 	config_path = "./config.txt"
