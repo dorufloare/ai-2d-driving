@@ -10,7 +10,7 @@ import pygame
 
 #Map (from 1 to 5, increasing in difficulty)
 
-MAP = 'map2.png'
+MAP = 'map5.png'
 
 #Constants
 
@@ -22,8 +22,8 @@ BORDER = 120
 CAR_START_X = 830
 CAR_START_Y = 920
 
-CAR_SIZE_X = 50
-CAR_SIZE_Y = 50
+CAR_SIZE_X = 30
+CAR_SIZE_Y = 30
 
 DEFAULT_SPEED = 20
 MIN_SPEED = 12
@@ -37,6 +37,9 @@ BAD_COLOR = (255, 255, 255, 255)
 SENSOR_COLOR = (0, 255, 0)
 
 MAX_SENSOR_LENGTH = 300
+
+GENERATION_TIME = 30
+DRAW_SENSORS = False
 
 current_generation = 0
 
@@ -80,6 +83,8 @@ class Car:
 		self.draw_sensors(screen)
 
 	def draw_sensors(self, screen):
+		if not DRAW_SENSORS:
+			return
 		for sensor in self.sensors:
 			position = sensor[0]
 			pygame.draw.line(screen, SENSOR_COLOR, self.center, position, 1)
@@ -160,7 +165,7 @@ class Car:
 		return self.alive
 	
 	def get_reward(self):
-		return self.distance / (CAR_SIZE_X / 2)
+		return self.distance / (CAR_SIZE_X / 4)
 	
 	def get_data(self):
 		sensors = self.sensors
@@ -233,7 +238,7 @@ def run_simulation(genomes, config):
 				genomes[i][1].fitness += car.get_reward()
 
 		#all cars are dead or too much time elapsed
-		if cars_alive == 0 or time.time() - start_timer > 25:
+		if cars_alive == 0 or time.time() - start_timer > GENERATION_TIME:
 			break
 		
 		screen.blit(game_map, (0, 0))
