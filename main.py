@@ -10,7 +10,7 @@ import pygame
 
 #Map (from 1 to 5, increasing in difficulty)
 
-MAP = 'map5.png'
+MAP = 'map4.png'
 
 #Constants
 
@@ -37,6 +37,7 @@ BAD_COLOR = (255, 255, 255, 255)
 SENSOR_COLOR = (0, 255, 0)
 
 MAX_SENSOR_LENGTH = 300
+SENSOR_SENSIVITY = 15
 
 GENERATION_TIME = 30
 DRAW_SENSORS = False
@@ -171,7 +172,7 @@ class Car:
 		sensors = self.sensors
 		sensor_data = [0, 0, 0, 0, 0]
 		for i, sensor in enumerate(sensors):
-			sensor_data[i] = int(sensor[1] / 30)
+			sensor_data[i] = int(sensor[1] / SENSOR_SENSIVITY)
 		return sensor_data
 
 
