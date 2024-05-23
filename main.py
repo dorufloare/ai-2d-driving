@@ -10,7 +10,7 @@ import pygame
 
 #Map (from 1 to 5, increasing in difficulty)
 
-MAP = 'map4.png'
+MAP = 'map1.png'
 
 #Constants
 
@@ -39,7 +39,7 @@ SENSOR_COLOR = (0, 255, 0)
 MAX_SENSOR_LENGTH = 300
 SENSOR_SENSIVITY = 15
 
-GENERATION_TIME = 30
+GENERATION_TIME = 15
 DRAW_SENSORS = False
 
 current_generation = 0
@@ -207,6 +207,9 @@ def run_simulation(genomes, config):
 				elif event.key == pygame.K_SPACE:
 					skip_generation = True
 					break
+				elif event.key == pygame.K_s:
+					global DRAW_SENSORS
+					DRAW_SENSORS = not DRAW_SENSORS
 		
 		if skip_generation:
 			break
